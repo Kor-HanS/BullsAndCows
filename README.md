@@ -10,3 +10,9 @@
 
 ![image](https://user-images.githubusercontent.com/99121615/221143046-47b32ec1-1316-49b6-88ac-2ddde7919fef.png)
 ![image](https://user-images.githubusercontent.com/99121615/221143112-966c79ad-b211-49cf-8e70-f6ca1910c554.png)
+
+2. 게임 로직 구현
+- GameStart UnityEvent 변수 생성 
+- 게임 시작 시, GameStartEvent.Invoke() 를 통해 이벤트 관리.
+- 새로운 정답 생성 , 게임 관련 변수 초기화 , 화면내 Text UI 초기화.
+- 각종 버튼 리스너 콜백 함수 연결.
