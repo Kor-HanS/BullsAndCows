@@ -68,7 +68,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "x \uBC88\uC9F8 \uC2DC\uB3C4\n\uC22B\uC790 : 1234\n\uC815\uB2F5! "
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b86b3dc6f0a43294d85ffddee1288105, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ee9e5c9f5a1a73e4ba15227732392165, type: 2}
   m_sharedMaterial: {fileID: -4426261821949137538, guid: b86b3dc6f0a43294d85ffddee1288105, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -132,6 +132,6 @@ MonoBehaviour:
   m_margin: {x: 0, y: 10, z: 0, w: 10}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
