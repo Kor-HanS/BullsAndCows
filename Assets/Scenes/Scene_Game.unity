@@ -1045,7 +1045,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1885047384}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
@@ -1182,7 +1182,7 @@ RectTransform:
   m_Children:
   - {fileID: 1614225735}
   m_Father: {fileID: 1885047384}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
@@ -1651,7 +1651,7 @@ RectTransform:
   m_Children:
   - {fileID: 1922252565}
   m_Father: {fileID: 1885047384}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
@@ -4347,6 +4347,8 @@ MonoBehaviour:
   Button_NumInput: {fileID: 561830754}
   Button_NumDelete: {fileID: 412667684}
   Text_Input: {fileID: 1275640055}
+  Text_TryNum: {fileID: 408789007}
+  Text_Result_Prefab: {fileID: 3429040170547952504, guid: 8cb628cd47ca50447b9f098c08129c68, type: 3}
   GameStartEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -5108,9 +5110,9 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1275640054}
+  - {fileID: 408789006}
   - {fileID: 561830753}
   - {fileID: 412667683}
-  - {fileID: 408789006}
   m_Father: {fileID: 1790996768}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

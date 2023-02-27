@@ -24,17 +24,26 @@ public class GameManager : MonoBehaviour
     // 텍스트 UI
     [SerializeField]
     private TMP_Text Text_Input;
+    [SerializeField]
+    private TMP_Text Text_TryNum;
+
+    // 스크롤뷰 UI
+    [SerializeField]
+    private GameObject Text_Result_Prefab;
 
     // prviate 변수
-    private int now = 0; // 현재 입력 할 인덱스.
-    private int[] answer;
-    private int[] inputs; // 4개의 숫자를 string으로 관리.
+    private int now; // 현재 입력 할 숫자의 인덱스.
+    private int[] answer; // 정답 4자리수
+    private int[] inputs; // 입력된 숫자. 4자리수.
     private int tryNum = 0; // 시도 횟수
 
     // public 변수
     public UnityEvent GameStartEvent;
 
     private void Awake(){
+        answer = new int[4];
+        inputs = new int[4];
+
         // 버튼 콜백 함수 연결.
         Button_Restart.onClick.AddListener(OnClickButton_Restart);
         Button_NumDelete.onClick.AddListener(OnClickButton_NumDelete);
@@ -44,20 +53,17 @@ public class GameManager : MonoBehaviour
             Buttons_Number[i].onClick.AddListener( delegate { OnClickButton_Number(now);});
         }
         Button_NumInput.interactable = false;
-    }
-
-    private void Start() {
-        answer = new int[4];
-        inputs = new int[4];
 
         // 이벤트 관리.
         GameStartEvent = new UnityEvent();
-        GameStartEvent.AddListener(GenerateNewAnswer);
         GameStartEvent.AddListener(InitializeVariables);
         GameStartEvent.AddListener(UpdateTextInput);
+    }
 
+    private void Start() {
         // 게임 시작.
         GameStartEvent.Invoke();    
+        answer = GenerateNewAnswer();
     }
 
     private void Update()
@@ -83,26 +89,26 @@ public class GameManager : MonoBehaviour
         Text_Input.text = inputText;
     }
 
+    // Text_TryNum 초기화.
+    public void UpdateTextTryNum(){
+        Text_TryNum.text = $"시도 횟수 : {tryNum}";
+    }
+
     // 야구게임 정답 생성.
-    public void GenerateNewAnswer(){
-        int[] t_num = new int[4];
+    public int[] GenerateNewAnswer(){
         bool[] t_visit = new bool[10];
         for(int i = 0 ; i < 4; i++){
             if(i == 0){
-                t_num[i] = Random.Range(1,10);
-                t_visit[t_num[i]] = true;
+                answer[i] = Random.Range(1,10);
+                t_visit[answer[i]] = true;
             }else{
                 do{
-                    t_num[i] = Random.Range(0,10);
-                }while(t_visit[t_num[i]]);
-                t_visit[t_num[i]] = true;
+                    answer[i] = Random.Range(0,10);
+                }while(t_visit[answer[i]]);
+                t_visit[answer[i]] = true;
             }
-            answer[i] = t_num[i];
         }
-        print(answer[0]);
-        print(answer[1]);
-        print(answer[2]);
-        print(answer[3]);
+        return answer;
     }
 
     // 게임 관련 변수 초기화.
@@ -118,16 +124,57 @@ public class GameManager : MonoBehaviour
         for(int j = 0 ; j < 10; j++){
             Buttons_Number[j].interactable = true;
         }
+        UpdateTextTryNum();
+        Text_Input.text = "재시작";
+    }
+
+    // 정답과 input 비교.
+    public void CheckAnswerWithInput(){
+        tryNum++; UpdateTextTryNum();
+        int strike = 0;
+        int ball = 0;
+        for(int i = 0 ; i < 4; i++){
+            print(answer[i]);
+            for(int j = 0 ; j < 4; j++){
+                print(inputs[j]);
+                if(answer[i] == inputs[j]){
+                    if(i == j){strike++; break;}
+                    else{
+                        ball++; break;
+                    }
+                }
+            }
+        }
+
+        if(strike > 0|| ball > 0){
+            if(strike == 4){
+                // 정답.
+                Text_Input.text = "answer";
+            }else{
+                // strike & ball
+                Text_Input.text = $"Strike : {strike}\n Ball : {ball}";
+            }
+        }else{
+            // out
+            Text_Input.text = "OUT"; 
+        }
+
+        now = 0;
+        for(int i = 0 ; i < 10; i++){
+            Buttons_Number[i].interactable = true;
+        }
+        Button_NumInput.interactable = false;
     }
 
     // 버튼 콜백 함수
     public void OnClickButton_Restart(){
         GameStartEvent.Invoke();
+        answer = GenerateNewAnswer();
     }
 
     public void OnClickButton_Number(int num){
-        inputs[now++]  = num;
-        print(num);
+        inputs[now++] = num;
+        Buttons_Number[num].interactable = false;
         // 정답 텍스트 업데이트.
         UpdateTextInput();
         // 4개의 숫자를 모두 골랐다면 입력 버튼 활성화.
@@ -151,5 +198,6 @@ public class GameManager : MonoBehaviour
 
     public void OnClickButton_NumInput(){
         // answer과 inputString 비교후 , 결과 출력. 
+        CheckAnswerWithInput();
     }
 }
