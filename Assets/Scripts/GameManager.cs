@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     
     // 버튼 UI
     [SerializeField]
+    private Button Button_GameExit; // 게임 종료.
+    [SerializeField]
     private Button Button_Restart; // 재시작
     [SerializeField]
     private Button[] Buttons_Number; // 배열 숫자 입력 0 ~ 9 
@@ -30,12 +32,15 @@ public class GameManager : MonoBehaviour
     // 스크롤뷰 UI
     [SerializeField]
     private GameObject Text_Result_Prefab;
+    [SerializeField]
+    Transform contentTransform;
 
     // prviate 변수
     private int now; // 현재 입력 할 숫자의 인덱스.
     private int[] answer; // 정답 4자리수
     private int[] inputs; // 입력된 숫자. 4자리수.
     private int tryNum = 0; // 시도 횟수
+    private List<GameObject> results;
 
     // public 변수
     public UnityEvent GameStartEvent;
@@ -43,8 +48,10 @@ public class GameManager : MonoBehaviour
     private void Awake(){
         answer = new int[4];
         inputs = new int[4];
+        results = new List<GameObject>();
 
         // 버튼 콜백 함수 연결.
+        Button_GameExit.onClick.AddListener(OnClickButton_GameExit);
         Button_Restart.onClick.AddListener(OnClickButton_Restart);
         Button_NumDelete.onClick.AddListener(OnClickButton_NumDelete);
         Button_NumInput.onClick.AddListener(OnClickButton_NumInput);
@@ -126,6 +133,7 @@ public class GameManager : MonoBehaviour
         }
         UpdateTextTryNum();
         Text_Input.text = "재시작";
+        if(results.Count > 0){results.Clear();}
     }
 
     // 정답과 input 비교.
@@ -164,9 +172,19 @@ public class GameManager : MonoBehaviour
             Buttons_Number[i].interactable = true;
         }
         Button_NumInput.interactable = false;
+        
+        // 스크롤뷰 content 하위 추가.
+        GameObject newResult = Instantiate(Text_Result_Prefab, new Vector3(0,0,0), Quaternion.identity);
+        newResult.GetComponent<TMP_Text>().text = $"{tryNum} 번째 시도\n숫자 : {inputs[0]}{inputs[1]}{inputs[2]}{inputs[3]}\n{Text_Input.text}";
+        results.Add(newResult);
+        newResult.transform.SetParent(contentTransform, false);
     }
 
     // 버튼 콜백 함수
+    public void OnClickButton_GameExit(){
+        Application.Quit();
+    }
+
     public void OnClickButton_Restart(){
         GameStartEvent.Invoke();
         answer = GenerateNewAnswer();
@@ -197,7 +215,13 @@ public class GameManager : MonoBehaviour
     }
 
     public void OnClickButton_NumInput(){
+
+        for(int i = 0 ; i < results.Count; i++){
+            results[i].transform.Translate(new Vector3(0,-240,0));
+        }
+
         // answer과 inputString 비교후 , 결과 출력. 
         CheckAnswerWithInput();
+
     }
 }
